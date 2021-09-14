@@ -1,38 +1,18 @@
 
 #include <iostream>
 #include <functional>
+#include "Stream.h"
+#include "Lexer.h"
 using namespace std;
 
-template <typename T>
-struct Stream {
-    T x;
-    Stream<T> next() const;
-};
-
-template <>
-struct Stream<int> {
-    int x;
-    explicit Stream<int>(int y) : x(y) {}
-    Stream<int> next() const {
-        return Stream<int>{x+1};
-    }
-};
-
-template <>
-struct Stream<char> {
-    char x;
-    explicit Stream<char>(char y) : x(y) {}
-    static Stream<char> next() {
-        return Stream<char>{static_cast<char>(getchar())};
-    }
-};
-
 int main() {
-    Stream<char> x(' ');
+    shared_ptr<ifstream> file = make_shared<ifstream>("./input.in");
+    FileStream ss(file);
+    Lexer x("");
     int t = 10;
     while (t--) {
-        cout << x.x;
-        x = x.next();
+        cout << ss.get() << endl;
+        ss = ss.next();
     }
     return 0;
 }

@@ -3,4 +3,4 @@ project(JSONLIB)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(JSONLIB main.cpp)
+add_executable(JSONLIB main.cpp Lexer.h Stream.h Token.h Map.h)
