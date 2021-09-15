@@ -14,7 +14,7 @@ template <typename T, typename U>
 struct Stream {
     virtual T get() const = 0;
     T peek() const;
-    virtual bool exhausted() const = 0;
+    virtual bool exhausted() const noexcept = 0;
     virtual U next() = 0;
 };
 
@@ -37,7 +37,7 @@ struct FileStream : public Stream<char, FileStream> {
     char peek() const {
         return static_cast<char>(file->peek());
     }
-    bool exhausted() const override {
+    bool exhausted() const noexcept override {
         return file->eof();
     }
     FileStream next() override {

@@ -21,7 +21,15 @@ struct Token {
         Quote,
         Solidus,
         Backslash,
-        Colon
+        Colon,
+
+        Backspace,
+        Formfeed,
+        Linefeed,
+        CarriageReturn,
+        HorizontalTab,
+
+        Unicode
     };
     Type type;
     std::string value;

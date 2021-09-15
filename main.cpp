@@ -6,13 +6,10 @@
 using namespace std;
 
 int main() {
-    shared_ptr<ifstream> file = make_shared<ifstream>("./input.in");
-    FileStream ss(file);
-    Lexer x("");
-    int t = 10;
-    while (t--) {
-        cout << ss.get() << endl;
-        ss = ss.next();
+    Lexer x("./input.in");
+    while (!x.ts.exhausted()) {
+        auto y = x.ts.get();
+        x.ts = x.ts.next();
     }
     return 0;
 }
