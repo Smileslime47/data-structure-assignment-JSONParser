@@ -11,9 +11,6 @@
 class LexerException : public std::exception {
 };
 
-class UnexpectedTokenException : public LexerException {
-};
-
 class InvalidHexadecimal : public std::exception {
 };
 
@@ -25,7 +22,7 @@ namespace LexerUtil {
             {']',  Token{Token::Type::RightBracket, "]"}},
             {'{',  Token{Token::Type::LeftBrace, "{"}},
             {'}',  Token{Token::Type::RightBrace, "}"}},
-            {'"',  Token{Token::Type::Quote, "\'"}},
+            {'"',  Token{Token::Type::Quote, "\""}},
             {'/',  Token{Token::Type::Solidus, "/"}},
             {'\\', Token{Token::Type::Backslash, "\\"}},
             {':',  Token{Token::Type::Colon, ":"}},
@@ -34,6 +31,7 @@ namespace LexerUtil {
             {'\n', Token{Token::Type::Linefeed, "\n"}},
             {'\r', Token{Token::Type::CarriageReturn, "\r"}},
             {'\t', Token{Token::Type::HorizontalTab, "\t"}},
+            {',', Token{Token::Type::Comma, ","}},
     };
     static const unordered_map<char, Token> space = {
             {' ',  Token{Token::Type::Whitespace, " "}},
@@ -82,6 +80,10 @@ struct Lexer {
         Token x;
         Lexer *parent;
     };
+private:
+    bool withinString = false;
+
+public:
 
     Token nextToken(FileStream &ss) {
         using namespace LexerUtil;
@@ -102,11 +104,9 @@ struct Lexer {
         return Token{Token::Type::Unicode, cur2};
     }
 
-    explicit Lexer(const string &path) : ts(make_shared<ifstream>(path), this) {}
+    explicit Lexer(const string path) : ts(make_shared<ifstream>(path), this){}
 
     TokenStream ts;
-private:
-    bool withinString = false;
 };
 
 

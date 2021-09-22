@@ -22,6 +22,7 @@ struct Token {
         Solidus,
         Backslash,
         Colon,
+        Comma,
 
         Backspace,
         Formfeed,
