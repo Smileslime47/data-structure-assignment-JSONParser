@@ -1,0 +1,8 @@
+whitespace := (' ' | '\n' | '\r' | '\t')*
+number := '-'? ('0' | ['1'..'9'] digit*) ('.' digit+)? (('e' | 'E') ('-' | '+')? digit+)?
+string := '"' (codepoint | '\\' ('"' | '\\' | '/'| 'b' | 'f' | 'n' | 'r' | 't' | 'u' hex{4})) '"'
+null := "null"
+boolean = "true" | "false"
+value := whitespace (string | number | object | array | true | false | null)
+array := '[' (whitespace | value (',' value)*) ']'
+object := '{' (whitespace | whitespace string whitespace ':' value (',' whitespace string whitespace ':' value)*) '}'

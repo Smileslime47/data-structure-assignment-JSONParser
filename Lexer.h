@@ -14,6 +14,9 @@ class LexerException : public std::exception {
 class InvalidHexadecimal : public std::exception {
 };
 
+class EOFEncoutered : public LexerException {
+};
+
 namespace LexerUtil {
     static const unordered_map<char, Token> table = {
             {'(',  Token{Token::Type::LeftParenthesis, "("}},
@@ -63,15 +66,18 @@ struct Lexer {
             x = parent->nextToken(ss);
         }
 
-        Token get() const override {
+        [[nodiscard]] Token get() const override {
             return x;
         }
 
-        bool exhausted() const noexcept override {
+        [[nodiscard]] bool exhausted() const noexcept override {
             return ss.exhausted();
         }
 
         TokenStream next() override {
+            if (exhausted()) {
+                throw EOFEncoutered();
+            }
             return {ss, parent};
         }
 
@@ -104,7 +110,7 @@ public:
         return Token{Token::Type::Unicode, cur2};
     }
 
-    explicit Lexer(const string path) : ts(make_shared<ifstream>(path), this){}
+    explicit Lexer(const string& path) : ts(make_shared<ifstream>(path), this){}
 
     TokenStream ts;
 };
