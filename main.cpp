@@ -16,9 +16,7 @@ constexpr auto toUnderlyingType(E e)
 
 int main() {
     Lexer x("./input.in");
-    Parser p(x);
-    auto xx = p.parse();
-    auto yy = p.parse();
-    cout << toUnderlyingType(type(xx).value());
+    JSONBoolean z{true};
+    cout << z.b ;
     return 0;
 }

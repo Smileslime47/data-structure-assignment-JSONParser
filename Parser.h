@@ -126,7 +126,7 @@ public:
                 if (cur.value[0] != tr[i]) throw UnexpectedTokenException(cur);
                 ll.ts = ll.ts.next();
             }
-            return JSONTrue();
+            return JSONBoolean{true};
         } else if (cur.value == "f") {
             char fl[] = "false";
             for (int i = 0; i != 5; ++i) {
@@ -134,7 +134,7 @@ public:
                 if (cur.value[0] != fl[i]) throw UnexpectedTokenException(cur);
                 ll.ts = ll.ts.next();
             }
-            return JSONFalse();
+            return JSONBoolean{false};
         } else {
             throw UnexpectedTokenException(cur);
         }

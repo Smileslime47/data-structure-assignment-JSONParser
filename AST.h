@@ -53,19 +53,8 @@ class JSONNull : public JSONValue {
 
 class JSONBoolean : public JSONValue {
 public:
-    [[nodiscard]] virtual bool get() const = 0;
-};
-
-class JSONTrue : public JSONBoolean {
-    [[nodiscard]] bool get() const override {
-        return true;
-    }
-};
-
-class JSONFalse : public JSONBoolean {
-    [[nodiscard]] bool get() const override {
-        return false;
-    }
+    bool b;
+    explicit JSONBoolean(bool _b) : b(_b){}
 };
 
 class JSONArray : public JSONValue {
