@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/mnt/data/Document/Development/CodeCollection/Cpp/JSONLIB/build",
+  "command": "/usr/bin/c++   -g -std=gnu++20 -o CMakeFiles/JSONLIB.dir/main.cpp.o -c /mnt/data/Document/Development/CodeCollection/Cpp/JSONLIB/main.cpp",
+  "file": "/mnt/data/Document/Development/CodeCollection/Cpp/JSONLIB/main.cpp"
+}
+]

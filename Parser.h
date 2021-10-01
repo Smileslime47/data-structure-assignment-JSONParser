@@ -29,7 +29,7 @@ namespace ParserUtil {
     static const std::vector<std::string> table = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     template<typename T>
-    T qpow(T a, int b) {
+    T qpow(T a, int b) { // 快速幂
         if (!b) return 1;
         if (b == 1) return a;
         auto ans = qpow(a, b / 2);
@@ -48,6 +48,7 @@ public:
         parseWhitespace();
         Token cur = ll.ts.get();
         JSONValue ans;
+        // 按照当前字符判断转移的状态
         if (cur.value == "\"") {
             auto x = parseString();
             ans.put(x);

@@ -1,22 +1,36 @@
 
 #include <iostream>
 #include <functional>
-#include "Stream.h"
-#include "Lexer.h"
-#include "Map.h"
-#include "Parser.h"
 #include <variant>
+#include "Lexer.h"
+#include "Parser.h"
+
 using namespace std;
 
-template<typename E>
-constexpr auto toUnderlyingType(E e)
-{
-    return static_cast<typename std::underlying_type<E>::type>(e);
+template <typename Target>
+void visitValue(JSONValue &v, function<void(Target)> f) {
+    std::visit([&](auto &&arg) {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, Target>) {
+            f(arg);
+        }
+    }, *(v.v));
 }
 
 int main() {
-    Lexer x("./input.in");
-    JSONBoolean z{true};
-    cout << z.b ;
+    Lexer x("./test.json");
+    Parser p(x);
+    auto j = p.parse();
+    visitValue<JSONObject>(j,[](JSONObject y) -> void {
+        visitValue<JSONString>(y.m["name"], [](const JSONString &n) {
+            cout << "name: " << n.get() << '\n';
+        });
+        visitValue<JSONNumber>(y.m["id"], [](const JSONNumber &id) {
+            cout << "id: " << (int)id.x << '\n';
+        });
+        visitValue<JSONBoolean>(y.m["protected"], [](const JSONBoolean &pro) {
+            cout << "protected: " << std::boolalpha << pro.b << '\n';
+        });
+    });
     return 0;
 }

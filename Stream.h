@@ -10,12 +10,13 @@
 #include "Token.h"
 using namespace std;
 
+// 惰性流接口
 template <typename T, typename U>
 struct Stream {
-    virtual T get() const = 0;
-    T peek() const;
-    virtual bool exhausted() const noexcept = 0;
-    virtual U next() = 0;
+    virtual T get() const = 0;  // 获取当前元素
+    T peek() const; // 获取下一个元素
+    virtual bool exhausted() const noexcept = 0; // 是否已经结束
+    virtual U next() = 0; // 进入下一状态
 };
 
 template<typename T, typename U>
