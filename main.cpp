@@ -1,38 +1,36 @@
 
 #include <iostream>
 #include <functional>
+#include <variant>
+#include "Lexer.h"
+#include "Parser.h"
+
 using namespace std;
 
-template <typename T>
-struct Stream {
-    T x;
-    Stream<T> next() const;
-};
-
-template <>
-struct Stream<int> {
-    int x;
-    explicit Stream<int>(int y) : x(y) {}
-    Stream<int> next() const {
-        return Stream<int>{x+1};
-    }
-};
-
-template <>
-struct Stream<char> {
-    char x;
-    explicit Stream<char>(char y) : x(y) {}
-    static Stream<char> next() {
-        return Stream<char>{static_cast<char>(getchar())};
-    }
-};
+template <typename Target>
+void visitValue(JSONValue &v, function<void(Target)> f) {
+    std::visit([&](auto &&arg) {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, Target>) {
+            f(arg);
+        }
+    }, *(v.v));
+}
 
 int main() {
-    Stream<char> x(' ');
-    int t = 10;
-    while (t--) {
-        cout << x.x;
-        x = x.next();
-    }
+    Lexer x("./test.json");
+    Parser p(x);
+    auto j = p.parse();
+    visitValue<JSONObject>(j,[](JSONObject y) -> void {
+        visitValue<JSONString>(y.m["name"], [](const JSONString &n) {
+            cout << "name: " << n.get() << '\n';
+        });
+        visitValue<JSONNumber>(y.m["id"], [](const JSONNumber &id) {
+            cout << "id: " << (int)id.x << '\n';
+        });
+        visitValue<JSONBoolean>(y.m["protected"], [](const JSONBoolean &pro) {
+            cout << "protected: " << std::boolalpha << pro.b << '\n';
+        });
+    });
     return 0;
 }
